@@ -1,0 +1,28 @@
+spring:
+  thymeleaf:
+    cache: false
+#    prefix: classpath:templates/
+#    check-template-location: true
+#    suffix: .html
+#    encoding: utf-8
+#    mode: HTML5
+#  resources:
+#    static-locations: classpath:static/
+#  resources:
+#    static-locations: classpath:templates/,classpath:static/
+  mvc:
+    view:
+      prefix: /templates/
+      suffix: .html
+    static-path-pattern: /static/**
+# 定位模板的目录
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://127.0.0.1:3306/sys_question?useUnicode=true&characterEncoding=utf8&serverTimezone=UTC
+    username: root
+    password: root
+mybatis-plus:
+  configuration:
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+
+

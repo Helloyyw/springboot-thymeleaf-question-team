@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<!--<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org" >-->
+<html lang="en">
+<head>
+    <meta content="text/html;charset=UTF-8"/>
+    <meta name="viewport" content="width=device-width,initial-scale=1"/>
+    <title>首页</title>
+    <script src="../static/js/vue.js"></script>
+<!--    <script src="/js/vue.js"></script>-->
+    <!-- 引入样式 -->
+    <link rel="stylesheet" href="https://unpkg.com/element-ui/lib/theme-chalk/index.css">
+    <!-- 引入组件库 -->
+    <script src="https://unpkg.com/element-ui/lib/index.js"></script>
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+    <style>
+        .carList:hover {
+           background-color: royalblue; !important;
+        }
+    </style>
+</head>
+<body>
+  <div id="app">
+      <el-container>
+          <el-header>
+              <h3>请选择你系统问卷类型：</h3>
+          </el-header>
+          <el-main>
+              <el-row :gutter="12" v-for="(item,index) in info" :key="index"  >
+                  <el-col :span="24">
+                      <el-card shadow="always" class="carList">
+                          <div @click="goWenJuan(item.typeName)">{{index+1}}. {{item.typeName}}</div>
+                      </el-card>
+                  </el-col>
+             </el-row>
+          </el-main>
+      </el-container>
+  </div>
+</body>
+<script type="text/javascript">
+    var vm ;
+     window.onload = function (ev) {
+         vm= new Vue({
+             el: '#app',
+             data: {
+                 info: null,
+             },
+             mounted : function () {
+                  this.initData();
+             },
+             methods:{
+                 initData :function () {
+                    //请求数据库返回问卷类型列表
+                     axios
+                         .get('../sysType/getData')
+                         .then(response => {
+                         this.info = response.data
+                     })
+                     .catch(error => {
+                         console.log(error);
+                         alert("接口执行异常");
+                     })
+                 .finally(() => this.loading = false)
+                 },
+                 goWenJuan :function (bsm) {
+                     alert(bsm);
+                     //根据bsm得到对应的问卷题目
+                     axios.post('../question/getQuestion', {
+                         bsm: bsm       // 参数 firstName
+                     }).then(function (response) {
+                             console.log(response);
+                         })
+                         .catch(function (error) {
+                             console.log(error);
+                         });
+                 }
+             }
+         })
+     }
+
+</script>
+</html>
